@@ -10,6 +10,9 @@ import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
 })
 export class HomePage implements OnInit {
   response: any = 'msg Response';
+  inputSQL: string = ''; //eslint-disable-line
+  db: any;
+  products: any[] = [];
   constructor(
     private sqlite: SQLite,
     private platform: Platform,
@@ -27,20 +30,32 @@ export class HomePage implements OnInit {
             location: 'default',
           })
           .then((db: SQLiteObject) => {
+            this.db = db;
             db.executeSql('create table danceMoves(name VARCHAR(32))', [])
               .then(() => {
                 this.response = 'Executed SQL yupiiii';
-                this.sqlitePorter
-                  .importSqlToDb(db, sql)
-                  .then(() => {
-                    this.response += 'Create table';
-                  })
-                  .catch((e) => this.response += e);
+                // this.sqlitePorter
+                //   .importSqlToDb(db, sql)
+                //   .then(() => {
+                //     this.response += 'Create table';
+                //   })
+                //   .catch((e) => (this.response += e));
               })
               .catch((e) => (this.response = e));
           })
           .catch((e) => console.log(e));
       }
     });
+  }
+  onEjecutar(): void {
+    this.db
+      .executeSql(this.inputSQL, [])
+      .then((res) => {
+        this.response = res;
+        for (let i = 0; i < res.rows.length; i++) {
+          this.products.push(res.rows.item(i));
+        }
+      })
+      .catch((e) => (this.response = e));
   }
 }

@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title> Blank </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,10 +12,24 @@
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-    <h3>
-      {{response|json}}
-    </h3>
+    <ion-item>
+      <p>
+        Resultado: {{response|json}}
+      </p>
+      <p>
+        Productos {{products|json}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Floating Label</ion-label>
+      <ion-input
+        type="text"
+        placeholder="SQL Inyection"
+        [(ngModel)]="inputSQL"
+      ></ion-input>
+    </ion-item>
+    <ion-button (click)="onEjecutar()">Ejecutar</ion-button>
   </div>
+
+  
 </ion-content>
