@@ -13,23 +13,25 @@
 
   <div id="container">
     <ion-item>
-      <p>
-        Resultado: {{response|json}}
-      </p>
-      <p>
-        Productos {{products|json}}
-      </p>
+      <p>Resultado: {{response|json}}</p>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Floating Label</ion-label>
+      <p>Productos {{products|json}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">SQL Inyection</ion-label>
       <ion-input
         type="text"
         placeholder="SQL Inyection"
         [(ngModel)]="inputSQL"
       ></ion-input>
     </ion-item>
-    <ion-button (click)="onEjecutar()">Ejecutar</ion-button>
+    <ion-button (click)="onEjecutar()">Ejecutar Consulta</ion-button>
+    <ion-buttons>
+      <ion-button (click)="createDataBase()">Crear BD</ion-button>
+      <ion-button (click)="createTableProducts()">Crear Tabla</ion-button>
+      <ion-button (click)="insertProducts()">Insertar Datos</ion-button>
+      <ion-button (click)="inputSQL=''">Limpiar Response</ion-button>
+    </ion-buttons>
   </div>
-
-  
 </ion-content>
