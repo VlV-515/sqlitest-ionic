@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
     });
   }
   createTableProducts(): void {
-    const sql = `create table products (id INTEGER(11) PRIMARY KEY, nombre VARCHAR(100), codigo_agrupador VARCHAR(20),codigo VARCHAR(20),codigo_secundario VARCHAR(20),codigo_barra VARCHAR(15),descipcion VARCHAR(50),estatus boolean , fecha_hora VARCHAR(25),relaccion_sat VARCHAR(10),requiere_serie boolean,tipo VARCHAR(25),venta_fraccionaria boolean, ancho float(10),largo float(10),peso VARCHAR(20), unidad_principal_id VARCHAR(20),numero_ventas INTEGER(11),estatus_id INTEGER(11),url_amigable VARCHAR(200),marca VARCHAR(30))`; //eslint-disable-line
+    const sql = `create table products (id INTEGER(11) PRIMARY KEY, nombre VARCHAR(100), codigo_agrupador VARCHAR(20),codigo VARCHAR(20),codigo_secundario VARCHAR(20),codigo_barra VARCHAR(15),descripcion VARCHAR(50),estatus boolean , fecha_hora VARCHAR(25),relacion_sat VARCHAR(10),requiere_serie boolean,tipo VARCHAR(25),venta_fraccionaria boolean, ancho float(10),alto FLOAT(11),largo float(10),peso VARCHAR(20), unidad_principal_id VARCHAR(20),numero_ventas INTEGER(11),estatus_id INTEGER(11),url_amigable VARCHAR(200),marca VARCHAR(30))`; //eslint-disable-line
     this.db
       .executeSql(sql, [])
       .then(() => {
@@ -81,7 +81,7 @@ export class HomePage implements OnInit {
   }
 
   getSqlStatement(p: ProductModel) {
-    let sql = `insert into products (id, nombre, clasificador_id, codigo_agrupador, codigo,codigo_secundario, codigo_barra, descripcion, departamentos, estatus, fecha_hora, relacion_sat, requiere_serie, tipo, venta_fraccionaria, ancho, alto, largo, peso, unidad_principal_id, archivos, numero_ventas, estatus_id, tokens, es_kit, sugerido, url_amigable, bloqueado, marca, objeto_imp) VALUES ('${p.id}', '${p.nombre}', '${p.clasificador_id}', '${p.codigo_agrupador}', '${p.codigo}', '${p.codigo_secundario}', '${p.codigo_barra}', '${p.descripcion}', '${p.departamentos}', '${p.estatus}', '${p.fecha_hora}', '${p.relacion_sat}', '${p.requiere_serie}', '${p.tipo}', '${p.venta_fraccionaria}', '${p.ancho}', '${p.alto}', '${p.largo}', '${p.peso}', '${p.unidad_principal_id}', '${p.numero_ventas}', '${p.estatus_id}', '${p.url_amigable}','${p.marca}')`; //eslint-disable-line
+    let sql = `insert into products (id, nombre, codigo_agrupador, codigo,codigo_secundario, codigo_barra, descripcion, estatus, fecha_hora, relacion_sat, requiere_serie, tipo, venta_fraccionaria, ancho, alto, largo, peso, unidad_principal_id, numero_ventas, estatus_id, url_amigable, marca) VALUES ('${p.id}', '${p.nombre}', '${p.codigo_agrupador}', '${p.codigo}', '${p.codigo_secundario}', '${p.codigo_barra}', '${p.descripcion}', '${p.estatus}', '${p.fecha_hora}', '${p.relacion_sat}', '${p.requiere_serie}', '${p.tipo}', '${p.venta_fraccionaria}', '${p.ancho}', '${p.alto}', '${p.largo}', '${p.peso}', '${p.unidad_principal_id}', '${p.numero_ventas}', '${p.estatus_id}', '${p.url_amigable}','${p.marca}')`; //eslint-disable-line
     return sql;
   }
 }
