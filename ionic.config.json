@@ -1,0 +1,7 @@
+{
+  "name": "sqlitest",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
