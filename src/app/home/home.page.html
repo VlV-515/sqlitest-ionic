@@ -1,69 +1,83 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Kore - Prueba SQLite </ion-title>
+    <ion-title> Kore - Prueba SQLitee </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-item>
-    <p>Resultado: {{msgResponse}}</p>
-  </ion-item>
+<ion-content [scrollEvents]="true">
+  <ion-list>
+    <ion-item>
+      <p>Resultado: {{msgResponse}}</p>
+    </ion-item>
+    <ion-item>
+      <p>ResultadoSQL: {{msgResponse2 | json}}</p>
+    </ion-item>
 
-  <ion-item>
-    <p>Errores: {{msgError}}</p>
-  </ion-item>
+    <ion-item>
+      <p>Errores: {{msgError}}</p>
+    </ion-item>
+    <ion-item>
+      <p>ErroresSQL: {{msgError2 | json}}</p>
+    </ion-item>
 
-  <ion-item-divider></ion-item-divider>
+    <ion-item-divider>Consultas SQL</ion-item-divider>
 
-  <ion-item>
-    <ion-label position="floating">Consulta SQL</ion-label>
-    <ion-input
-      type="text"
-      placeholder="Consulta SQL"
-      [(ngModel)]="querySQL"
-    ></ion-input>
+    <ion-item>
+      <ion-label position="floating">Consulta SQL</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Consulta SQL"
+        [(ngModel)]="querySQL"
+      ></ion-input>
+      <section>
+        <ion-button (click)="ejecutarSql()" class="ion-margin-bottom">
+          Ejecutar Consulta
+        </ion-button>
+      </section>
+    </ion-item>
+
+    <ion-item-divider>Busqueda de producto en DB (Like)</ion-item-divider>
+
+    <ion-item>
+      <ion-label position="floating">Buscar producto</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Buscar producto in DB"
+        [(ngModel)]="searchProduct"
+      ></ion-input>
+      <section>
+        <ion-button color="success" (click)="consultProductsInDB()"
+          >Buscar producto</ion-button
+        >
+        <ion-button color="primary" (click)="products=[]"
+          >Limpiar productos</ion-button
+        >
+      </section>
+      <p>products: {{products|json}}</p>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
     <section>
-      <ion-button (click)="ejecutarSql()"> Ejecutar Consulta </ion-button>
-    </section>
-  </ion-item>
-
-  <ion-item-divider></ion-item-divider>
-
-  <ion-item>
-    <ion-label position="floating">Buscar producto</ion-label>
-    <ion-input
-      type="text"
-      placeholder="Buscar producto"
-      [(ngModel)]="searchProduct"
-    ></ion-input>
-    <section>
-      <ion-button color="success" (click)="consultProducts()"
-        >Buscar producto</ion-button
+      <ion-button expand="block" (click)="createTableProducts()">
+        Crear Tabla Products
+      </ion-button>
+      <ion-button expand="block" (click)="insertProducts()">
+        Insertar Datos en tabla Products
+      </ion-button>
+      <ion-button
+        color="warning"
+        expand="block"
+        (click)="msgResponse='-OK-'; msgResponse2='-OK-'"
       >
-      <ion-button color="primary" (click)="products=[]"
-        >Limpiar productos</ion-button
+        Limpiar Resultado
+      </ion-button>
+      <ion-button
+        color="warning"
+        expand="block"
+        (click)="msgError='-OK-'; msgError2='-OK-'"
       >
+        Limpiar Errores
+      </ion-button>
     </section>
-    <p>products: {{products|json}}</p>
-  </ion-item>
-
-  <ion-item-divider></ion-item-divider>
-
-  <div>
-    <ion-button expand="block" (click)="createTableProducts()">
-      Crear Tabla Products
-    </ion-button>
-    <ion-button expand="block" (click)="insertProducts()">
-      Insertar Datos en tabla Products
-    </ion-button>
-    <ion-button expand="block" (click)="getProductsFromDB()">
-      Llenar observable productos
-    </ion-button>
-    <ion-button color="warning" expand="block" (click)="msgResponse='-OK-'">
-      Limpiar Resultado
-    </ion-button>
-    <ion-button color="warning" expand="block" (click)="msgError='-OK-'">
-      Limpiar Errores
-    </ion-button>
-  </div>
+  </ion-list>
 </ion-content>

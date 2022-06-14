@@ -13,8 +13,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HomePage implements OnInit {
   productsDB = new BehaviorSubject<ProductModel[]>([]);
-  msgResponse = 'msg Response';
-  msgError = 'msg Error';
+  msgResponse = '-OK-';
+  msgResponse2 = '-OK-';
+  msgError = '-OK-';
+  msgError2 = '-OK-';
 
   querySQL = '';
 
@@ -55,10 +57,12 @@ export class HomePage implements OnInit {
     this.db
       .executeSql(sql, [])
       .then((res) => {
-        this.msgResponse = `- Table created-> ${res} -`;
+        this.msgResponse = `- Table created -`;
+        this.msgResponse2 = res;
       })
       .catch((e) => {
-        this.msgError = `- Table not created-> ${e} -`;
+        this.msgError = `- Table not created -`;
+        this.msgError2 = e;
       });
   }
 
@@ -77,9 +81,12 @@ export class HomePage implements OnInit {
         this.db
           .executeSql(sql, [])
           .then((res) => {
-            this.msgResponse = `- Products inserted-> ${res} -`;
+            this.msgResponse2 = res;
           })
-          .catch((e) => (this.msgError = `- Error insert products-> ${e} -`));
+          .catch((e) => {
+            this.msgError = `- Products not inserted -`;
+            this.msgError2 = e;
+          });
       });
     });
   }
@@ -92,11 +99,17 @@ export class HomePage implements OnInit {
   ejecutarSql(): void {
     this.db
       .executeSql(this.querySQL, [])
-      .then((res) => (this.msgResponse = `- SQL executed-> ${res} -`))
-      .catch((e) => (this.msgError = `- Error SQL executed-> ${e} -`));
+      .then((res) => {
+        this.msgResponse = `- SQL executed -`;
+        this.msgResponse2 = res;
+      })
+      .catch((e) => {
+        this.msgError = `- SQL not executed -`;
+        this.msgError2 = e;
+      });
   }
 
-  consultProducts(): void {
+  consultProductsInDB(): void {
     const sql = `select * from products where nombre like '%${this.searchProduct}%'`;
     this.db
       .executeSql(sql, [])
@@ -107,19 +120,5 @@ export class HomePage implements OnInit {
         }
       })
       .catch((e) => (this.msgError = `- Error Consult products-> ${e} -`));
-  }
-
-  getProductsFromDB(): void {
-    this.db
-      .executeSql('select * from products', [])
-      .then((res) => {
-        const products = [];
-        for (let i = 0; i < res.rows.length; i++) {
-          products.push(res.rows.item(i));
-        }
-        this.productsDB.next(products);
-        this.msgResponse += '-Get products from DB-';
-      })
-      .catch((e) => (this.msgError = `-Error Get products from DB-> ${e} -`));
   }
 }
