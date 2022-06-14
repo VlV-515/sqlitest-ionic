@@ -13,7 +13,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HomePage implements OnInit {
   productsDB = new BehaviorSubject<ProductModel[]>([]);
-  msgResponse = '-OK-';
+  msgResponse =
+    '-OK uiersfvwt eurguifyauseurycbguw6gyr6u4wydjkegcfnyg yg bkc4wx c4 ybcy 4y3fc 3uy4c hn-';
   msgResponse2 = '-OK-';
   msgError = '-OK-';
   msgError2 = '-OK-';
@@ -66,24 +67,56 @@ export class HomePage implements OnInit {
       });
   }
 
+  deleteTableProducts(): void {
+    const sql = `DROP TABLE products`;
+    this.db
+      .executeSql(sql, [])
+      .then((res) => {
+        this.msgResponse = `- Table deleted -`;
+        this.msgResponse2 = res;
+      })
+      .catch((e) => {
+        this.msgError = `- Table not deleted -`;
+        this.msgError2 = e;
+      });
+  }
+
   insertProducts(): void {
     this.getDataJson();
   }
 
   getDataJson(): void {
-    //TODO
-    //const urlFile = 'assets/json-products-db.json';
-    const urlFile = 'assets/json-products-db-test.json';
+    const dateStart = new Date();
+    const startTime =
+      dateStart.getHours() +
+      ':' +
+      dateStart.getMinutes() +
+      ':' +
+      dateStart.getSeconds();
+    const urlFile = 'assets/json-products-db.json';
+    //const urlFile = 'assets/json-products-db-test.json';
     this.http.get(urlFile).subscribe((products: ProductModel[]) => {
-      this.msgResponse = `- Inserting ${products.length} products-`;
-      products.forEach((element) => {
+      this.msgResponse = `- Inserting ${products.length} products Inicio: ${startTime} ->`;
+
+      products.forEach((element, indx) => {
         const sql = this.getSqlSentence(element);
         this.db
           .executeSql(sql, [])
           .then((res) => {
             this.msgResponse2 = res;
+            if (indx === products.length - 1) {
+              const dateFinish = new Date();
+              const finishTime =
+                dateFinish.getHours() +
+                ':' +
+                dateFinish.getMinutes() +
+                ':' +
+                dateFinish.getSeconds();
+              this.msgResponse += ` Fin: ${finishTime}-`;
+            }
           })
           .catch((e) => {
+            console.log(e);
             this.msgError = `- Products not inserted -`;
             this.msgError2 = e;
           });

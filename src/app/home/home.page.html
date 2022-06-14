@@ -1,6 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Kore - Prueba SQLitee </ion-title>
+    <ion-title> Kore - Prueba SQLite </ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        size="small"
+        color="success"
+        class="ion-margin-end"
+        (click)="msgResponse='-OK-'; msgResponse2='-OK-'"
+      >
+        <ion-icon name="trash"></ion-icon>
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button
+        size="small"
+        color="danger"
+        class="ion-margin-end"
+        (click)="msgError='-OK-'; msgError2='-OK-'"
+      >
+        <ion-icon name="trash"></ion-icon>
+        <ion-icon name="bug"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,7 +40,24 @@
       <p>ErroresSQL: {{msgError2 | json}}</p>
     </ion-item>
 
-    <ion-item-divider>Consultas SQL</ion-item-divider>
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-items-center">
+        <ion-col>
+          <ion-button color="tertiary" (click)="createTableProducts()">
+            Crear Tabla
+          </ion-button>
+          <ion-button color="tertiary" (click)="insertProducts()">
+            Insertar Datos
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="block" color="danger" (click)="deleteTableProducts()">
+      Eliminar Tabla
+    </ion-button>
+
+    <ion-item-divider class="ion-margin-top"></ion-item-divider>
 
     <ion-item>
       <ion-label position="floating">Consulta SQL</ion-label>
@@ -36,48 +73,29 @@
       </section>
     </ion-item>
 
-    <ion-item-divider>Busqueda de producto en DB (Like)</ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item>
-      <ion-label position="floating">Buscar producto</ion-label>
+      <ion-label position="floating">Buscar producto en DB</ion-label>
       <ion-input
         type="text"
-        placeholder="Buscar producto in DB"
+        placeholder="Buscar producto en DB"
         [(ngModel)]="searchProduct"
       ></ion-input>
       <section>
-        <ion-button color="success" (click)="consultProductsInDB()"
-          >Buscar producto</ion-button
-        >
-        <ion-button color="primary" (click)="products=[]"
-          >Limpiar productos</ion-button
-        >
+        <ion-button color="success" (click)="consultProductsInDB()">
+          Buscar producto
+        </ion-button>
+        <ion-button color="primary" (click)="products=[]; searchProduct='';">
+          Limpiar productos
+        </ion-button>
       </section>
-      <p>products: {{products|json}}</p>
+      <ion-item *ngFor="let product of products">
+        <ion-avatar>
+          <ion-icon name="hammer"></ion-icon>
+        </ion-avatar>
+        <p>{{product.nombre}}</p>
+      </ion-item>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
-    <section>
-      <ion-button expand="block" (click)="createTableProducts()">
-        Crear Tabla Products
-      </ion-button>
-      <ion-button expand="block" (click)="insertProducts()">
-        Insertar Datos en tabla Products
-      </ion-button>
-      <ion-button
-        color="warning"
-        expand="block"
-        (click)="msgResponse='-OK-'; msgResponse2='-OK-'"
-      >
-        Limpiar Resultado
-      </ion-button>
-      <ion-button
-        color="warning"
-        expand="block"
-        (click)="msgError='-OK-'; msgError2='-OK-'"
-      >
-        Limpiar Errores
-      </ion-button>
-    </section>
   </ion-list>
 </ion-content>
