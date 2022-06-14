@@ -1,37 +1,69 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Blank </ion-title>
+    <ion-title> Kore - Prueba SQLite </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <p>Resultado: {{msgResponse}}</p>
+  </ion-item>
 
-  <div id="container">
-    <ion-item>
-      <p>Resultado: {{response|json}}</p>
-    </ion-item>
-    <ion-item>
-      <p>Productos {{products|json}}</p>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">SQL Inyection</ion-label>
-      <ion-input
-        type="text"
-        placeholder="SQL Inyection"
-        [(ngModel)]="inputSQL"
-      ></ion-input>
-    </ion-item>
-    <ion-button (click)="onEjecutar()">Ejecutar Consulta</ion-button>
-    <ion-buttons>
-      <ion-button (click)="createDataBase()">Crear BD</ion-button>
-      <ion-button (click)="createTableProducts()">Crear Tabla</ion-button>
-      <ion-button (click)="insertProducts()">Insertar Datos</ion-button>
-      <ion-button (click)="inputSQL=''">Limpiar Response</ion-button>
-    </ion-buttons>
+  <ion-item>
+    <p>Errores: {{msgError}}</p>
+  </ion-item>
+
+  <ion-item-divider></ion-item-divider>
+
+  <ion-item>
+    <ion-label position="floating">Consulta SQL</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Consulta SQL"
+      [(ngModel)]="querySQL"
+    ></ion-input>
+    <section>
+      <ion-button (click)="ejecutarSql()"> Ejecutar Consulta </ion-button>
+    </section>
+  </ion-item>
+
+  <ion-item-divider></ion-item-divider>
+
+  <ion-item>
+    <ion-label position="floating">Buscar producto</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Buscar producto"
+      [(ngModel)]="searchProduct"
+    ></ion-input>
+    <section>
+      <ion-button color="success" (click)="consultProducts()"
+        >Buscar producto</ion-button
+      >
+      <ion-button color="primary" (click)="products=[]"
+        >Limpiar productos</ion-button
+      >
+    </section>
+    <p>products: {{products|json}}</p>
+  </ion-item>
+
+  <ion-item-divider></ion-item-divider>
+
+  <div>
+    <ion-button expand="block" (click)="createTableProducts()">
+      Crear Tabla Products
+    </ion-button>
+    <ion-button expand="block" (click)="insertProducts()">
+      Insertar Datos en tabla Products
+    </ion-button>
+    <ion-button expand="block" (click)="getProductsFromDB()">
+      Llenar observable productos
+    </ion-button>
+    <ion-button color="warning" expand="block" (click)="msgResponse='-OK-'">
+      Limpiar Resultado
+    </ion-button>
+    <ion-button color="warning" expand="block" (click)="msgError='-OK-'">
+      Limpiar Errores
+    </ion-button>
   </div>
 </ion-content>
