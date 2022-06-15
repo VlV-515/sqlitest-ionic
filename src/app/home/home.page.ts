@@ -13,8 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HomePage implements OnInit {
   productsDB = new BehaviorSubject<ProductModel[]>([]);
-  msgResponse =
-    '-OK uiersfvwt eurguifyauseurycbguw6gyr6u4wydjkegcfnyg yg bkc4wx c4 ybcy 4y3fc 3uy4c hn-';
+  msgResponse = '-OK-';
   msgResponse2 = '-OK-';
   msgError = '-OK-';
   msgError2 = '-OK-';
@@ -117,7 +116,7 @@ export class HomePage implements OnInit {
           })
           .catch((e) => {
             console.log(e);
-            this.msgError = `- Products not inserted -`;
+            this.msgError = `- Product not inserted ${element.id} -`;
             this.msgError2 = e;
           });
       });
@@ -128,12 +127,74 @@ export class HomePage implements OnInit {
     let sql = `insert into products (id, nombre, codigo_agrupador, codigo,codigo_secundario, codigo_barra, descripcion, estatus, fecha_hora, relacion_sat, requiere_serie, tipo, venta_fraccionaria, ancho, alto, largo, peso, unidad_principal_id, numero_ventas, estatus_id, url_amigable, marca) VALUES ('${p.id}', '${p.nombre}', '${p.codigo_agrupador}', '${p.codigo}', '${p.codigo_secundario}', '${p.codigo_barra}', '${p.descripcion}', '${p.estatus}', '${p.fecha_hora}', '${p.relacion_sat}', '${p.requiere_serie}', '${p.tipo}', '${p.venta_fraccionaria}', '${p.ancho}', '${p.alto}', '${p.largo}', '${p.peso}', '${p.unidad_principal_id}', '${p.numero_ventas}', '${p.estatus_id}', '${p.url_amigable}','${p.marca}')`; //eslint-disable-line
     return sql;
   }
+  getSQlValues(p: ProductModel): string {
+    let sql = `insert into products (id, nombre, codigo_agrupador, codigo,codigo_secundario, codigo_barra, descripcion, estatus, fecha_hora, relacion_sat, requiere_serie, tipo, venta_fraccionaria, ancho, alto, largo, peso, unidad_principal_id, numero_ventas, estatus_id, url_amigable, marca) VALUES ('${p.id}', '${p.nombre}', '${p.codigo_agrupador}', '${p.codigo}', '${p.codigo_secundario}', '${p.codigo_barra}', '${p.descripcion}', '${p.estatus}', '${p.fecha_hora}', '${p.relacion_sat}', '${p.requiere_serie}', '${p.tipo}', '${p.venta_fraccionaria}', '${p.ancho}', '${p.alto}', '${p.largo}', '${p.peso}', '${p.unidad_principal_id}', '${p.numero_ventas}', '${p.estatus_id}', '${p.url_amigable}','${p.marca}') ;`; //eslint-disable-line
+    return sql;
+  }
+
+  insertProductsMasive() {
+    const dateStart = new Date();
+    const startTime =
+      dateStart.getHours() +
+      ':' +
+      dateStart.getMinutes() +
+      ':' +
+      dateStart.getSeconds();
+    const urlFile = 'assets/json-products-db.json';
+    //const urlFile = 'assets/json-products-db-test.json';
+    this.http.get(urlFile).subscribe((products: ProductModel[]) => {
+      this.msgResponse = `- Inserting ${products.length} products Inicio: ${startTime} ->`;
+      let sqlunido = ''; //eslint-disable-line
+      this.db.executeSql('BEGIN TRANSACTION', []).then(() => {
+        products.forEach((element, indx) => {
+          sqlunido += this.getSQlValues(element);
+        });
+        this.db.executeSql(sqlunido, []).then((res) => {
+          this.msgResponse2 = res;
+          this.db
+            .executeSql('COMMIT', [])
+            .then(() => {
+              const dateFinish = new Date();
+              const finishTime =
+                dateFinish.getHours() +
+                ':' +
+                dateFinish.getMinutes() +
+                ':' +
+                dateFinish.getSeconds();
+              this.msgResponse += ` Fin: ${finishTime}-`;
+            })
+            .catch((e) => {
+              console.log(e);
+              this.msgError = `- Products not inserted -`;
+              this.msgError2 = e;
+            });
+        });
+      });
+    });
+  }
 
   ejecutarSql(): void {
+    const dateStart = new Date();
+    const startTime =
+      dateStart.getHours() +
+      ':' +
+      dateStart.getMinutes() +
+      ':' +
+      dateStart.getSeconds();
+    this.msgResponse = `- Ejecutando SQL Inicio: ${startTime} ->`;
     this.db
       .executeSql(this.querySQL, [])
       .then((res) => {
-        this.msgResponse = `- SQL executed -`;
+        const dateFinish = new Date();
+        const finishTime =
+          dateFinish.getHours() +
+          ':' +
+          dateFinish.getMinutes() +
+          ':' +
+          dateFinish.getSeconds();
+        this.msgResponse += ` Fin: ${finishTime}-`;
+
+        this.msgResponse += `${finishTime} -`;
         this.msgResponse2 = res;
       })
       .catch((e) => {
